@@ -106,7 +106,7 @@ app.get('/details', function(req,res) {
 				}
 			}
 			if (result != null) {
-				res.render('details', {restaurants: r});
+				res.render('details', {restaurants: r, user: users});
 			} else {
 				res.status(500).end(req.query.id + ' not found!');
 			}
@@ -172,7 +172,11 @@ app.post('/create', function(req, res){
 	r['borough'] = (req.body.borough != null) ? req.body.borough : null;
 	r['cuisine'] = (req.body.cuisine != null) ? req.body.cuisine : null;
 	r['name'] = (req.body.name != null) ? req.body.name : null;
-	r['sampleFile'] = (req.body.sampleFile != null) ? req.body.sampleFile : null;
+	r['photo'] = {};
+	r.photo.name = (req.files.name != null) ? req.files.name : null;
+	r.photo.mimetype = (req.files.mimetype != null) ? req.files.mimetype : null;
+	r.photo.data = (req.files.data != null) ? req.files.data : null;
+	r['username'] = req.session.userid;
 
 	MongoClient.connect(mongourl, function(err, db) {
 		assert.equal(err,null);
@@ -207,7 +211,7 @@ app.post('/change', function(req, res){
 	r['borough'] = (req.body.borough != null) ? req.body.borough : null;
 	r['cuisine'] = (req.body.cuisine != null) ? req.body.cuisine : null;
 	r['name'] = (req.body.name != null) ? req.body.name : null;
-	r['sanpleFile'] = (req.body.sampleFile != null) ? req.body.sampleFile : null;
+	r['sampleFile'] = (req.body.sampleFile != null) ? req.body.sampleFile : null;
 	
 	MongoClient.connect(mongourl, function(err, db) {
 		console.log('Connected to MongoDB\n');
@@ -220,5 +224,84 @@ app.post('/change', function(req, res){
 		res.render('details', {restaurants: r});
 });
 });
+
+app.get('/remove', function(req, res){
+		MongoClient.connect(mongourl, function(err, db) {
+		console.log('Connected to MongoDB\n');
+		db.collection('restaurants', {}, function(err, restaurants){
+			restaurants.remove({_id : ObjectId}, function(err, result){
+				if (err) {
+					console.log(err);
+				}
+				console.log(result);
+				db.close();
+			})
+		})
+		});
+		res.render('remove');
+});
+
+app.get('/findName', function(req, res){
+	res.render('findName');
+});
+
+
+app.post('/findName', function(req, res){
+	var keyword = req.body.search;
+	console.log(keyword);
+	MongoClient.connect(mongourl, function(err, db) {
+		console.log('Connected to MongoDB\n');
+		db.collection('restaurants').find({"name" : keyword }).toArray(function(err, result){
+			if (err) throw err
+				console.log(result);
+				res.render('searchResult', {restaurants: result});
+		})
+		db.close();
+
+	})
+});
+
+app.get('/findCuisine', function(req, res){
+	res.render('findCuisine');
+});
+
+
+app.post('/findCuisine', function(req, res){
+	var keyword = req.body.search;
+	console.log(keyword);
+	MongoClient.connect(mongourl, function(err, db) {
+		console.log('Connected to MongoDB\n');
+		db.collection('restaurants').find({"cuisine" : keyword }).toArray(function(err, result){
+			if (err) throw err
+				console.log(result);
+				res.render('searchResult', {restaurants: result});
+		})
+		db.close();
+
+	})
+});
+
+app.get('/findBorough', function(req, res){
+	res.render('findBorough');
+});
+
+
+app.post('/findBorough', function(req, res){
+	var keyword = req.body.search;
+	console.log(keyword);
+	MongoClient.connect(mongourl, function(err, db) {
+		console.log('Connected to MongoDB\n');
+		db.collection('restaurants').find({"borough" : keyword }).toArray(function(err, result){
+			if (err) throw err
+				console.log(result);
+				res.render('searchResult', {restaurants: result});
+		})
+		db.close();
+
+	})
+});
+
+
+
 
 app.listen(process.env.PORT || 8099);
