@@ -9,18 +9,17 @@
 <H2><%= restaurants.name %></H2>
 <% if (restaurants.photo != null) { %>
 <p>
-  <img src="data:<%= restaurants.photo.mimetype %>;base64,<%= restaurants.photo %>">
+  <img src="data:<%= restaurants.mimetype %>;base64,<%= restaurants.photo %>">
 <br>
 <% } %>
 <p>Name: <%= restaurants.name %></p>
 <p>Cuisine: <%= restaurants.cuisine %></p>
-<p>Borough: <%= restaurants.borough %></p>
 <p>Street: <%= restaurants.address.street %></p>
 <p>Building: <%= restaurants.address.building %></p>
 <p>Zipcode: <%= restaurants.address.zipcode %></p>
 <p>GPS: [ <%= restaurants.address.coord[0] %>,  <%=restaurants.address.coord[1] %> ]</p>
 <p>Rating: <ol><li> <%=restaurants.rate %></li></ol></p>
-<p>Created by: <%= restaurants.username %></p>
+<p>Created by: <%=restaurants.username %></p>
 
 
 <!--Googlemap-->
@@ -30,7 +29,7 @@
 <!--<a href/add2cart?id=<%= restaurants.id %>>add to shopping cart</a>-->
 <a href=/rate>Rate</a>
 <a href=/change?id=<%= restaurants._id %>>Edit</a>
-<a href=/remove?id=<%= restaurants._id %>>Delete</a>
+<a href=/remove>Delete</a>
 <a href=/list>Go Back</a>
 
 
