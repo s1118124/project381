@@ -172,6 +172,7 @@ app.post('/create', function(req, res){
 	r['borough'] = (req.body.borough != null) ? req.body.borough : null;
 	r['cuisine'] = (req.body.cuisine != null) ? req.body.cuisine : null;
 	r['name'] = (req.body.name != null) ? req.body.name : null;
+	r['sampleFile'] = (req.body.sampleFile != null) ? req.body.sampleFile : null;
 
 	MongoClient.connect(mongourl, function(err, db) {
 		assert.equal(err,null);
@@ -206,6 +207,7 @@ app.post('/change', function(req, res){
 	r['borough'] = (req.body.borough != null) ? req.body.borough : null;
 	r['cuisine'] = (req.body.cuisine != null) ? req.body.cuisine : null;
 	r['name'] = (req.body.name != null) ? req.body.name : null;
+	r['sanpleFile'] = (req.body.sampleFile != null) ? req.body.sampleFile : null;
 	
 	MongoClient.connect(mongourl, function(err, db) {
 		console.log('Connected to MongoDB\n');
