@@ -1,0 +1,11 @@
+<HTML>
+<BODY>
+<head>
+  <title>Rate!</H1></title>
+</head>
+<form action='/rate' method='post' encType='multipart/form-data'>
+<input type="number" value="" required>
+<input type='submit' value='Rate' />
+</form>
+</BODY>
+</HTML>
